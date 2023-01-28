@@ -41,7 +41,7 @@ class Employee(User):
 
     base_role = User.Role.Employee
     is_staff = True
-    Employee = EmployeeManager()
+    objects = EmployeeManager()
     class Meta:
         proxy = True
 
@@ -67,7 +67,7 @@ class Staff(User):
 
     base_role = User.Role.Staff
     # company = models.ForeignKey(Company,on_delete=models.PROTECT)
-    Staff = StaffManager()
+    objects = StaffManager()
 
     class Meta:
         proxy = True
@@ -117,6 +117,7 @@ class Transactions(models.Model):
         ('SEMI_OFF', 'Need_to_be_Fixed'),
         ('ON', 'WORKING'),
     ]
+   
     Device = models.ForeignKey(Device,on_delete=models.CASCADE)
     Employee = models.ForeignKey(EmployeeProfile,on_delete=models.CASCADE)
     Staff = models.ForeignKey(StaffProfile,on_delete=models.CASCADE)

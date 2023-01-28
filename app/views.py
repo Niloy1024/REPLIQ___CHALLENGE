@@ -21,7 +21,7 @@ class TransactionListCreateView(ListCreateAPIView):
 
     def get(self,c,*x,**y):
         print(self)
-        print(c.user.company)
+        # print(c.user.company)
         return super().get(self,c,*x,**y)
 
 class DeviceListCreateView(ListCreateAPIView):
