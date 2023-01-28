@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import Device,Transactions
+from .models import Device,Transactions,Company
 
-admin.site.register(Transactions)
-admin.site.register(Device)
+admin.site.register(Company)

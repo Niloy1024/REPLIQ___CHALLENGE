@@ -7,6 +7,9 @@ from datetime import datetime
 class Company(models.Model):
     name = models.CharField(max_length=20,default='')
 
+    def str(self):
+        return self.name
+
 class User(AbstractUser):
     class Role(models.TextChoices):
         ADMIN = "ADMIN", "Admin"
@@ -15,12 +18,17 @@ class User(AbstractUser):
 
     base_role = Role.ADMIN
 
+
+    
     role = models.CharField(max_length=50, choices=Role.choices)
+    company = models.ForeignKey(Company,on_delete=models.PROTECT,null=True)
     
     def save(self, *args, **kwargs):
         if not self.pk:
             self.role = self.base_role
             return super().save(*args, **kwargs)
+    def str(self):
+        return self.name
 
 
 class EmployeeManager(BaseUserManager):
@@ -34,7 +42,6 @@ class Employee(User):
     base_role = User.Role.Employee
     is_staff = True
     Employee = EmployeeManager()
-
     class Meta:
         proxy = True
 
@@ -59,7 +66,7 @@ class StaffManager(BaseUserManager):
 class Staff(User):
 
     base_role = User.Role.Staff
-
+    # company = models.ForeignKey(Company,on_delete=models.PROTECT)
     Staff = StaffManager()
 
     class Meta:
@@ -92,6 +99,10 @@ class Device(models.Model):
         ('ON', 'WORKING'),
     ]
     device_state = models.CharField(max_length=20,choices=state_choices)
+    company = models.ForeignKey(Company,on_delete=models.PROTECT)
+
+    def str(self):
+        return self.device_type
 
     
     
@@ -112,9 +123,12 @@ class Transactions(models.Model):
     transaction_type = models.CharField(max_length=10,choices=choices)
     time =  datetime.now()
     device_condition = models.CharField(max_length=10,choices=state_choices)
+    company = models.ForeignKey(Company,on_delete=models.PROTECT)
+    def str(self):
+        return self.time 
 
 @receiver(post_save, sender=Transactions)
-def create_user_profile(sender, instance, created, **kwargs):
+def Anynamecanbegiven(sender, instance, created, **kwargs):
     if created :
         instance.device_condition = instance.Device.device_state
 
